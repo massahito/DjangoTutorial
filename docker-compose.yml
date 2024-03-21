@@ -1,0 +1,28 @@
+version: "3.9"
+services:
+  web:
+    build:
+      context: ./requirements/django/
+      dockerfile: Containerfile
+    container_name: web
+    restart: unless-stopped
+    tty: true
+    working_dir: /opt/apps
+    volumes:
+      - ./requirements/django/tools/mysite:/opt/apps/
+      - ./requirements/django/tools/.pgpass:/root/.pgpass
+      - ./requirements/django/tools/.pg_service.conf:/root/.pg_service.conf
+    entrypoint: "./entrypoint.sh"
+    command: "python manage.py runserver 0.0.0.0:8000"
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+  db:
+    image: postgres
+    container_name: db
+    environment:
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+    ports:
+      - ${DB_PORT}:5432

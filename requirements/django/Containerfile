@@ -1,0 +1,20 @@
+FROM python:3.9
+
+RUN apt -y update && apt -y upgrade
+RUN apt -y install postgresql-client
+
+ENV PIP_NO_CACHE_DIR=off
+
+RUN pip install poetry
+
+WORKDIR /app
+COPY ./tools/pyproject.toml ./
+COPY ./tools/entrypoint.sh /usr/local/bin/entrypoint.sh
+RUN chmod +x /usr/local/bin/entrypoint.sh
+
+
+RUN poetry config virtualenvs.create false
+RUN poetry install
+
+CMD ["bash"]
+
