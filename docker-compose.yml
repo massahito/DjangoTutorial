@@ -9,10 +9,10 @@ services:
     tty: true
     working_dir: /opt/apps
     volumes:
-      - ./requirements/django/tools/mysite:/opt/apps/
+      - ./requirements/django/mysite/:/opt/apps/
       - ./requirements/django/tools/.pgpass:/root/.pgpass
       - ./requirements/django/tools/.pg_service.conf:/root/.pg_service.conf
-    entrypoint: "./entrypoint.sh"
+    entrypoint: "entrypoint.sh"
     command: "python manage.py runserver 0.0.0.0:8000"
     ports:
       - "8000:8000"
