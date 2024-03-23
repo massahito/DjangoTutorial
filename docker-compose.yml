@@ -9,7 +9,7 @@ services:
     tty: true
     working_dir: /opt/apps
     volumes:
-      - ./requirements/django/mysite/:/opt/apps/
+      - ./requirements/django/working-dir/working_dir/mysite/:/opt/apps/
       - ./requirements/django/tools/.pgpass:/root/.pgpass
       - ./requirements/django/tools/.pg_service.conf:/root/.pg_service.conf
     entrypoint: "entrypoint.sh"
