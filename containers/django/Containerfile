@@ -1,0 +1,28 @@
+FROM python:latest
+
+ENV PYTHONDONTWRITEBYTECODE=1
+
+ENV PYTHONUNBUFFERD=1
+
+ENV PROJECT_DIR=mysite
+
+WORKDIR /code
+
+COPY ./pyproject.toml /code/ 
+
+COPY ./django-code/ /code/django-code/
+
+RUN apt update \
+	&& apt install -y gcc python3-dev libpq-dev \
+	&& apt install -y pipx \
+	&& pipx ensurepath \
+	&& pipx install poetry
+
+RUN /root/.local/bin/poetry install
+
+COPY ./entrypoint.sh /usr/local/bin/entrypoint.sh
+
+RUN chmod +x /usr/local/bin/entrypoint.sh
+
+CMD ["entrypoint.sh"]
+
